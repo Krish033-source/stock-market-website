@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.secret_key = 'change_this_to_a_random_secret_key'  # CHANGE THIS TO A RANDOM SECRET KEY
 
 def get_random_stocks(n):
-    stocks = ['AAPL', 'MSFT', 'GOOG', 'AMZN', 'FB', 'TSLA', 'BABA', 'JPM', 'V', 'MA']
+    stocks = ['AAPL', 'MSFT', 'GOOG', 'AMZN', 'META', 'TSLA', 'BABA', 'JPM', 'V', 'MA']
     return random.sample(stocks, n)
 
 def get_stock_data(stock):
