@@ -1,9 +1,3 @@
-# Runtime dependencies:
-# - Flask
-# - yfinance
-# - matplotlib
-# - pandas
-
 from flask import Flask, render_template_string
 import yfinance as yf
 import pandas as pd
@@ -15,13 +9,12 @@ import io
 import base64
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key_here'  # Change this to a proper secret key
+app.config['SECRET_KEY'] = 'abcdef1234abcd'  
 
-# Define the top 10 Indian stocks
 indian_stocks = ['INFY.NS', 'HDFCBANK.NS', 'ICICIBANK.NS', 'LT.NS', 'AXISBANK.NS', 
                  'TATAMOTORS.NS', 'HCLTECH.NS', 'BHARTIARTL.NS', 'ASIANPAINT.NS', 'TCS.NS']
 
-# Define the HTML template
+
 html_template = '''
 <!DOCTYPE html>
 <html lang="en">
@@ -66,7 +59,6 @@ html_template = '''
 @app.route('/')
 def index():
     try:
-        # Fetch stock data
         stocks = []
         for stock in indian_stocks:
             try:
@@ -80,8 +72,7 @@ def index():
                     stocks.append({'symbol': stock, 'price': price, 'change': change})
             except Exception as e:
                 print(f'Error fetching {stock}: {e}')
-        
-        # Generate chart
+
         if stocks:
             fig, ax = plt.subplots()
             changes = [stock['change'] for stock in stocks]
@@ -91,7 +82,7 @@ def index():
             ax.set_ylabel('Change')
             ax.tick_params(axis='x', rotation=90)
             
-            # Save chart to bytes
+       
             buf = io.BytesIO()
             fig.savefig(buf, format='png')
             buf.seek(0)
@@ -100,7 +91,6 @@ def index():
         else:
             chart_url = ''
         
-        # Render template
         return render_template_string(html_template, chart_url=f'data:image/png;base64,{chart_url}', stocks=stocks)
     
     except Exception as e:
